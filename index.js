@@ -10,6 +10,10 @@ console.log([1, 4])
 sortedSquaredArray([-10, -5, 0, 5, 10])
 console.log([0, 25, 25, 100, 100])
 
+function valueEncoding(char, length, value='') {
+  if (length > 9) return valueEncoding(char, length-9, `${value}9${char}`)
+  return `${value}${length}${char}`
+}
 
 function runLengthEncoding(string) {
   if (!string) return 'empty string'
@@ -18,22 +22,18 @@ function runLengthEncoding(string) {
     if(!data[char]) {
       data[char] = {
         char,
-        length: 1
+        length: 1,
+        value: `1${char}`
       }
     }
     else {
       data[char].length ++
+      data[char].value = valueEncoding(data[char].char, data[char].length)
     }
   }
   let response = ''
-  console.log(data)
   Object.keys(data).forEach(char => {
-    if (data[char].length > 10) {
-      response += `9${data[char].char}${data[char].length -9}${data[char].char}`
-    }
-    else {
-      response += `${data[char].length}${data[char].char}`
-    }
+    response += `${data[char].value}`
   })
   return response
 }
